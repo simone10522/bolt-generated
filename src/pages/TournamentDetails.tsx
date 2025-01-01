@@ -118,11 +118,32 @@ import React, { useEffect, useState } from 'react';
           });
           if (pointsError) throw pointsError;
 
-          // 3. Fetch updated data
+          // 3. Check if all matches are completed and update tournament status
+          if (await allMatchesCompleted()) {
+            await supabase
+              .from('tournaments')
+              .update({ status: 'completed' })
+              .eq('id', id);
+          }
+
+          // 4. Fetch updated data
           fetchTournamentData();
         } catch (error: any) {
           setError(error.message);
         }
+      };
+
+      const allMatchesCompleted = async () => {
+        const { data, error } = await supabase
+          .from('matches')
+          .select('*')
+          .eq('tournament_id', id)
+          .eq('status', 'scheduled');
+        if (error) {
+          console.error("Error checking matches:", error);
+          return false;
+        }
+        return data.length === 0;
       };
 
       if (loading) {
