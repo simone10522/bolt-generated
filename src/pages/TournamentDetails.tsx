@@ -187,8 +187,8 @@ import React, { useEffect, useState } from 'react';
               {(tournament.status === 'in_progress' || tournament.status === 'completed') && (
                 <MatchList
                   matches={matches}
-                  onSetWinner={isOwner ? handleSetWinner : undefined}
-                  readonly={!isOwner}
+                  onSetWinner={isOwner && tournament.status === 'in_progress' ? handleSetWinner : undefined}
+                  readonly={tournament.status === 'completed' || !isOwner}
                 />
               )}
             </div>
