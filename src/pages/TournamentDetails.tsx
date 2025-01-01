@@ -184,7 +184,7 @@ import React, { useEffect, useState } from 'react';
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="md:col-span-2">
               <h2 className="text-xl font-semibold text-gray-900 mb-4">Matches</h2>
-              {tournament.status === 'in_progress' && (
+              {(tournament.status === 'in_progress' || tournament.status === 'completed') && (
                 <MatchList
                   matches={matches}
                   onSetWinner={isOwner ? handleSetWinner : undefined}
